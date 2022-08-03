@@ -46,7 +46,7 @@ public class Client {
         serverChannel = bootstrap.connect().sync().channel();
     }
 
-    private void send(String cmd) throws InterruptedException, IOException {
+    public void send(String cmd) throws InterruptedException, IOException {
         ChannelFuture future;
         String delimiter = "::=";
         String crlf = "\r\n";

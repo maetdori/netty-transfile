@@ -42,6 +42,12 @@ public class TransFileServerInboundHandler extends SimpleChannelInboundHandler<R
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		log.error(cause.getClass().getSimpleName() + " : {}", cause.getMessage(), cause);
-		ctx.close();
+
+		ResponseDataDto responseDataDto = ResponseDataDto.builder()
+				.opcode(TransFileProtocol.FAILED_OPCODE)
+				.data(ResponseCode.INTERNAL_SERVER_ERROR.getCode())
+				.build();
+
+		ctx.writeAndFlush(responseDataDto);
 	}
 }

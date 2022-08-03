@@ -10,6 +10,7 @@ public class TransFileProtocol {
 
 	public static final String SUCCESS_OPCODE = "OK";
 	public static final String FAILED_OPCODE = "NO";
+	public static final String FILE_OPCODE = "FI";
 
 	public static final char CMD_CREATE = 'C';
 	public static final char CMD_DELETE = 'D';
