@@ -1,7 +1,6 @@
 package com.nettytransfile.server;
 
 import com.nettytransfile.model.ResponseDataDto;
-import com.nettytransfile.model.TransFileProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -29,12 +28,12 @@ public class TransFileServerEncoder extends MessageToByteEncoder<ResponseDataDto
 				throw new NullPointerException("response is null");
 			}
 
-			String resultBody = TransFileProtocol.SUCCESS_OPCODE + response.getData();
+			String resultBody = response.getOpcode() + response.getData();
 			String result = String.format("%08d", resultBody.getBytes(charset).length) + resultBody;
 
 			out.writeBytes(Unpooled.wrappedBuffer(result.getBytes(charset)));
 		} catch (NullPointerException e) {
-			log.error(e.getClass().getSimpleName() + " : {}, remoteAddress={}", e.getMessage(), remoteAddress,e);
+			log.error(e.getClass().getSimpleName() + " : {}, remoteAddress={}", e.getMessage(), remoteAddress, e);
 		}
 	}
 
