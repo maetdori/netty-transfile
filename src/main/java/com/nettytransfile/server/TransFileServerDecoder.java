@@ -42,6 +42,10 @@ public class TransFileServerDecoder extends ByteToMessageDecoder {
 		int dataLength = Integer.parseInt(header.toString(charset)) - TransFileProtocol.OPCODE_LENGTH;
 		String opcode = in.readBytes(TransFileProtocol.OPCODE_LENGTH).toString(charset);
 
+		if (!TransFileProtocol.FILE_OPCODE.equals(opcode)) {
+			return getRequestDataDto(ResponseCode.WRONG_FORMAT_ERROR);
+		}
+
 		// check data
 		readableBytes = in.readableBytes();
 		if (readableBytes < dataLength) {
@@ -49,27 +53,32 @@ public class TransFileServerDecoder extends ByteToMessageDecoder {
 			return null;
 		}
 
+		// 3. make dto
 		ByteBuf data = in.readBytes(dataLength);
 		String rawData = data.toString(charset);
-
-		// 3. make dto
 		RequestDataDto dataDto = TransUtil.convertRequestDataDto(rawData);
 		if (dataDto == null) {
-			return RequestDataDto.builder()
-					.responseCode(ResponseCode.WRONG_FORMAT_ERROR)
-					.build();
+			in.discardReadBytes();
+			return getRequestDataDto(ResponseCode.WRONG_FORMAT_ERROR);
 		}
 
+		// check file
 		int fileSize = dataDto.getFileSize();
 		if (fileSize < in.readableBytes()) {
 			in.resetReaderIndex();
 			return null;
 		}
 
-		ByteBuf byteBuf = in.readBytes(fileSize);
-		byte[] array = byteBuf.array();
-		dataDto.setFile(array);
+		// 4. set file
+		ByteBuf file = in.readBytes(fileSize);
+		dataDto.setFile(file.array());
 
 		return dataDto;
+	}
+
+	private RequestDataDto getRequestDataDto(ResponseCode responseCode) {
+		return RequestDataDto.builder()
+				.responseCode(responseCode)
+				.build();
 	}
 }
