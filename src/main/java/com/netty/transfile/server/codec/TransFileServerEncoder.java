@@ -1,6 +1,6 @@
-package com.nettytransfile.server;
+package com.netty.transfile.server.codec;
 
-import com.nettytransfile.model.ResponseDataDto;
+import com.netty.transfile.common.dto.ResponseDataDto;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;

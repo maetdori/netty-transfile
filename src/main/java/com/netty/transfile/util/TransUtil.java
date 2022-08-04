@@ -1,9 +1,9 @@
-package com.nettytransfile.util;
+package com.netty.transfile.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nettytransfile.model.RequestDataDto;
-import com.nettytransfile.model.TransFileProtocol;
+import com.netty.transfile.common.TransFileProtocol;
+import com.netty.transfile.common.dto.RequestDataDto;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;

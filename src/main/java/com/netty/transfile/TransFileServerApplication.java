@@ -1,6 +1,6 @@
-package com.nettytransfile;
+package com.netty.transfile;
 
-import com.nettytransfile.server.TransFileServer;
+import com.netty.transfile.server.TransFileServer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

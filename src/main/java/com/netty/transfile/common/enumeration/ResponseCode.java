@@ -1,4 +1,4 @@
-package com.nettytransfile.model.enumeration;
+package com.netty.transfile.common.enumeration;
 
 import lombok.Getter;
 
@@ -22,5 +22,14 @@ public enum ResponseCode {
 	ResponseCode(int code, String message) {
 		this.code = code;
 		this.message = message;
+	}
+
+	public static String getMessageOf(int code) {
+		for (ResponseCode responseCode: values()) {
+			if (responseCode.code == code) {
+				return responseCode.message;
+			}
+		}
+		return null;
 	}
 }

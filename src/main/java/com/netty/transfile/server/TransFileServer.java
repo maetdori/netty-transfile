@@ -1,4 +1,4 @@
-package com.nettytransfile.server;
+package com.netty.transfile.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

@@ -1,6 +1,6 @@
-package com.nettytransfile.config;
+package com.netty.transfile.config;
 
-import com.nettytransfile.server.TransFileServer;
+import com.netty.transfile.server.TransFileServer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
