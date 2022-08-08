@@ -50,7 +50,7 @@ public class TransUtil {
 		File directory = new File(dataDto.getDir());
 		File file = new File(dataDto.getDir() + dataDto.getFileName());
 
-		if (!directory.exists() || !directory.mkdirs()) {
+		if (!directory.exists() && !directory.mkdirs()) {
 			log.error("file save failed : {}", dataDto.getDir() + dataDto.getFileName());
 			isSuccess = false;
 		}
