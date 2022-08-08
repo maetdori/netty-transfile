@@ -1,9 +1,9 @@
-package com.nettytransfile.server;
+package com.netty.transfile.server.codec;
 
-import com.nettytransfile.model.RequestDataDto;
-import com.nettytransfile.model.TransFileProtocol;
-import com.nettytransfile.model.enumeration.ResponseCode;
-import com.nettytransfile.util.TransUtil;
+import com.netty.transfile.common.TransFileProtocol;
+import com.netty.transfile.common.dto.RequestDataDto;
+import com.netty.transfile.common.enumeration.ResponseCode;
+import com.netty.transfile.util.TransUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;

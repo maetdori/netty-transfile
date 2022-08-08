@@ -1,4 +1,4 @@
-package com.nettytransfile.model;
+package com.netty.transfile.common;
 
 public class TransFileProtocol {
 

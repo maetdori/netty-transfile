@@ -1,5 +1,7 @@
-package com.nettytransfile.server;
+package com.netty.transfile.server;
 
+import com.netty.transfile.server.codec.TransFileServerEncoder;
+import com.netty.transfile.server.codec.TransFileServerDecoder;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;

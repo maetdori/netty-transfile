@@ -41,5 +41,5 @@ tasks.named('bootBuildImage') {
 }
 
 springBoot {
-	mainClass = "com.nettytransfile.TransFileServerApplication"
+	mainClass = "com.netty.transfile.TransFileServerApplication"
 }
