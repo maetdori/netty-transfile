@@ -20,7 +20,6 @@ public class TransFileClientEncoder extends MessageToByteEncoder<RequestDataDto>
 
         outputStream.write(String.format("%08d", request.getLength()).getBytes(charset));
         outputStream.write(request.getOpcode().getBytes(charset));
-        outputStream.write(request.getOpcode().getBytes(charset));
         outputStream.write(request.getData().getBytes(charset));
         outputStream.write(request.getFile());
 

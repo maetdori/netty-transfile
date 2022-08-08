@@ -56,7 +56,7 @@ public class TransFileClient {
         File file = new File(filePath);
 
         RequestDataDto requestDataDto = RequestDataDto.builder()
-                .opcode(TransFileProtocol.FILE_SEND_OPCODE)
+                .opcode(TransFileProtocol.FILE_OPCODE)
                 .cmd(cmd)
                 .fileName(fileName)
                 .fileSize((int) Files.size(file.toPath()))

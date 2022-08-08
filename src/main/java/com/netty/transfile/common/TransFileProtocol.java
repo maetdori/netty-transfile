@@ -8,7 +8,6 @@ public class TransFileProtocol {
 	public static final String CRLF = "\r\n";
 	public static final String DELIMITER = "::=";
 
-	public static final String FILE_SEND_OPCODE = "FI";
 	public static final String SUCCESS_OPCODE = "OK";
 	public static final String FAILED_OPCODE = "NO";
 	public static final String FILE_OPCODE = "FI";
