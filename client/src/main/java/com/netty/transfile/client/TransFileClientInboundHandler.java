@@ -6,13 +6,20 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 public class TransFileClientInboundHandler extends SimpleChannelInboundHandler<ResponseDataDto> {
 
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ResponseDataDto responseDataDto) {
-        responseDataDto.readData();
+    private final TransFileClient transFileClient;
+
+    public TransFileClientInboundHandler(TransFileClient transFileClient) {
+        this.transFileClient = transFileClient;
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
+    protected void channelRead0(ChannelHandlerContext ctx, ResponseDataDto responseDataDto) {
+        responseDataDto.readData();
+        transFileClient.setResponseDataDto(responseDataDto);
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.close();
     }
 }

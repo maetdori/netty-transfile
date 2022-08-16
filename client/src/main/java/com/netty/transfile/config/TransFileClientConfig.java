@@ -10,10 +10,10 @@ import java.nio.charset.Charset;
 @Configuration
 public class TransFileClientConfig {
 
-    @Value("${trans.server.charset}")
+    @Value("${trans.client.charset}")
     private Charset charset;
 
-    @Bean(initMethod = "connect", destroyMethod = "close")
+    @Bean
     public TransFileClient transFileClient() {
         return new TransFileClient(charset);
     }

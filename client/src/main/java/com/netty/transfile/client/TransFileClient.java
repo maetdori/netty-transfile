@@ -2,13 +2,15 @@ package com.netty.transfile.client;
 
 import com.netty.transfile.common.TransFileProtocol;
 import com.netty.transfile.common.dto.RequestDataDto;
+import com.netty.transfile.common.dto.ResponseDataDto;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.CharsetUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
@@ -35,6 +37,10 @@ public class TransFileClient {
     private EventLoopGroup eventLoopGroup;
     private Bootstrap bootstrap;
 
+    @Getter
+    @Setter
+    private ResponseDataDto responseDataDto;
+
     public TransFileClient(Charset charset) {
         if (charset == null) {
             this.charset = CharsetUtil.UTF_8;
@@ -43,17 +49,24 @@ public class TransFileClient {
         }
     }
 
-    public void connect() {
+    public void connect(ChannelFutureListener listener) throws InterruptedException {
         eventLoopGroup = new NioEventLoopGroup(1);
+        bootstrap = new Bootstrap();
 
-        bootstrap = new Bootstrap()
+        bootstrap
                 .group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .remoteAddress(new InetSocketAddress(port))
-                .handler(new TransFileClientInitializer(charset));
+                .handler(new TransFileClientInitializer(this, charset))
+                .connect()
+                .sync()
+                .addListener(listener)
+                .channel()
+                .closeFuture()
+                .sync();
     }
 
-    public void send(char cmd) throws InterruptedException, IOException {
+    public void send(char cmd) throws IOException, InterruptedException {
         File file = new File(filePath + fileName);
 
         RequestDataDto requestDataDto = RequestDataDto.builder()
@@ -67,26 +80,25 @@ public class TransFileClient {
 
         requestDataDto.createData();
 
-        ChannelFuture channelFuture = bootstrap.connect()
-                .addListener((ChannelFutureListener) future -> {
-                    if (!future.isSuccess()) {
-                        throw new IllegalStateException("operation failed.");
-                    }
-                    if (!future.channel().isActive()
-                            || !future.channel().isWritable()) {
-                        throw new IllegalStateException("channel is inactive.");
-                    }
-                    future.channel()
-                            .writeAndFlush(requestDataDto)
-                            .addListener((ChannelFutureListener) cf -> {
-                                if (!cf.isSuccess()) {
-                                    close();
-                                }
-                            });
-                })
-                .sync();
-
-        channelFuture.channel().closeFuture().sync();
+        connect(future -> {
+            try {
+                if (!future.isSuccess()) {
+                    throw new IllegalStateException("operation failed.");
+                }
+                if (!future.channel().isActive() || !future.channel().isWritable()) {
+                    throw new IllegalStateException("channel is inActive.");
+                }
+                future.channel()
+                        .writeAndFlush(requestDataDto)
+                        .addListener((ChannelFutureListener) cf -> {
+                            if (!cf.isSuccess()) {
+                                close();
+                            }
+                        });
+            } catch (Exception e) {
+                close();
+            }
+        });
     }
 
     public void close() {

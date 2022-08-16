@@ -16,7 +16,7 @@ public class TransFileClientApplication implements CommandLineRunner {
 	private final TransFileClient transFileClient;
 
 	public static void main(String[] args) {
-		SpringApplication.run(TransFileClientApplication.class, args);
+		SpringApplication.run(TransFileClientApplication.class, args).close();
 	}
 
 	@Override
@@ -36,7 +36,11 @@ public class TransFileClientApplication implements CommandLineRunner {
 			System.out.println("Invalid request. Try again.\n");
 		}
 
-		transFileClient.connect();
 		transFileClient.send(input);
+		while (true) {
+			if (transFileClient.getResponseDataDto() != null) {
+				break;
+			}
+		}
 	}
 }

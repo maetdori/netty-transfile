@@ -10,6 +10,8 @@ import java.nio.charset.Charset;
 
 @RequiredArgsConstructor
 public class TransFileClientInitializer extends ChannelInitializer<SocketChannel> {
+
+    private final TransFileClient transFileClient;
     private final Charset charset;
 
     @Override
@@ -17,6 +19,6 @@ public class TransFileClientInitializer extends ChannelInitializer<SocketChannel
        ch.pipeline()
                .addLast(new TransFileClientDecoder(charset))
                .addLast(new TransFileClientEncoder(charset))
-               .addLast(new TransFileClientInboundHandler());
+               .addLast(new TransFileClientInboundHandler(transFileClient));
     }
 }
